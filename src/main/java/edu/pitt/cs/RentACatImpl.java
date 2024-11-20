@@ -17,8 +17,16 @@ public class RentACatImpl implements RentACat {
 	 * @return true if cat exists and was rented out, false otherwise
 	 */
 
-	public boolean returnCat(int id) {
-		// TODO: Fill in
+	 public boolean returnCat(int id) {
+		Cat cat = getCat(id);
+
+		if (cat != null && cat.getRented()) {
+			cat.returnCat();
+			System.out.println("Welcome back, " + cat.getName() + "!");
+			return true;
+		}
+
+		System.out.println("Old Deuteronomy is already here!");
 		return false;
 	}
 
@@ -32,8 +40,16 @@ public class RentACatImpl implements RentACat {
 	 * @return true if cat exists and was not rented out, false otherwise
 	 */
 
-	public boolean rentCat(int id) {
-		// TODO: Fill in
+	 public boolean rentCat(int id) {
+		Cat cat = getCat(id);
+
+		if (cat != null && !cat.getRented()) {
+			cat.rentCat();
+			System.out.println(cat.getName() + " has been rented.");
+			return true;
+		}
+
+		System.out.println("Sorry, " + (cat != null ? cat.getName() : "Old Deuteronomy") + " is not here!");
 		return false;
 	}
 
@@ -46,11 +62,16 @@ public class RentACatImpl implements RentACat {
 	 * @return true if cat exists, false otherwise
 	 */
 
-	public boolean renameCat(int id, String name) {
-		// TODO: Fill in
-		return false;
+	 public boolean renameCat(int id, String name) {
+		Cat cat = getCat(id);
+		if (cat == null) {
+			return false;
+		}
+		cat.renameCat(name);
+		return true;
 	}
-
+	
+	
 	/**
 	 * Create a String list from the list of cats using the .toString() method of
 	 * each NON-RENTED Cat object in the list. That is, it should only add cats who
@@ -62,9 +83,16 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public String listCats() {
-		// TODO: Fill in
-		return "WRITE CODE FOR THIS";
-	}
+        StringBuilder sb = new StringBuilder();
+        
+        for (Cat cat : cats) {
+            if (!cat.getRented()) {
+                sb.append(cat.toString()).append(System.lineSeparator());
+            }
+        }
+        
+        return sb.toString();
+    }
 
 	/**
 	 * Given an id, return a reference to the specified cat if a cat with that ID
